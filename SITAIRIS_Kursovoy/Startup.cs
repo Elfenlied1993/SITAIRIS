@@ -54,12 +54,16 @@ namespace BSUIR.Web
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapRazorPages();
+            });
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Items}/{action=Details}/{id?}");
             });
         }
     }

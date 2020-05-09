@@ -6,42 +6,54 @@
     <title>@ViewData["Title"] - SITAIRIS_Kursovoy</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/production.css" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SITAIRIS_Kursovoy</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-dark border-bottom box-shadow mb-3">
+        <div class="container">
+            <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index">О МАГАЗИНЕ</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end text-white">E-shop.by</div>
+            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                <partial name="_LoginPartial" />
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+        </div>
+    </nav>
+</header>
+@if (ViewData["Title"]=="Index" || ViewData["Title"]=="Details") {
+        <form method="get"  asp-controller="Items" asp-action="Index" >
+            <p>
+                <input class="searchbox-form-text" placeholder="Поиск..." type="search" name="SearchString" value="" autocomplete="off" autocorrect="off" style="width: 25%;margin-left: 35%; display:inline-block">
+                <input class="button" type="submit" value="Поиск" style="width: 50px;margin-top: 13px; height: 35px; padding-top: 8px; padding-left: 5px">
+            </p>
+        </form>
+}
+    <div class="page-content page-content-product-card-3">
+        <div class="container">
+            <nav class="menu-goods">
+                <ul>
+                    <li>
+                        <a href="/catalog/9-telefony-i-planshety">Телефоны и планшеты</a>
+                    </li>
+                </ul>
+            </nav>
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
     </div>
-
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2020 - SITAIRIS_Kursovoy - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2020 - E-shop.by - <a asp-area="" asp-controller="Home" asp-action="Privacy">Политика конфиденциальности</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/production.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>
