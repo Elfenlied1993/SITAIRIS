@@ -1,39 +1,42 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using BSUIR.BL.Interfaces.Models;
+using BSUIR.BL.Interfaces.Models.DeliveryAddresses;
+using BSUIR.BL.Interfaces.Services;
 using BSUIR.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace BSUIR.Web.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IDeliveryAddressService _deliveryAddressService;
+        public HomeController(ILogger<HomeController> logger, IDeliveryAddressService deliveryAddressService)
         {
             _logger = logger;
+            _deliveryAddressService = deliveryAddressService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var coordinates = new List<Coordinates>();
-            coordinates.Add(new Coordinates()
+            var coordinates = new List<Marker>();
+            foreach (var address in await _deliveryAddressService.GetDeliveryAddressesAsync<DeliveryAddress>())
             {
-                Lat = 48.855901,
-                Lng = 2.349272
-            });
-            coordinates.Add(new Coordinates()
-            {
-                Lat = 52.520413,
-                Lng = 13.402794
-            });
-            coordinates.Add(new Coordinates()
-            {
-                Lat = 41.907074,
-                Lng = 12.498474
-            });
+                var coordinatesJson = JsonConvert.DeserializeObject<Coordinates>(address.Coordinates);
+                coordinates.Add(new Marker()
+                {
+                    Address = address.Street+", "+address.House,
+                    AddressId = address.Id,
+                    Lat = coordinatesJson.Lat,
+                    Lng = coordinatesJson.Lng
+                });
+            }
+
+            ViewData["DeliveryAddresses"] = await _deliveryAddressService.GetDeliveryAddressesAsync<DeliveryAddress>();
             return View(coordinates);
         }
 

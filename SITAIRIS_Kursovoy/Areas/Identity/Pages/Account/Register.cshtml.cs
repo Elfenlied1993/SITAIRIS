@@ -73,6 +73,7 @@ namespace BSUIR.Web.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = new User { UserName = Input.Email, Email = Input.Email, EmailConfirmed = true};
+                
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
@@ -84,6 +85,7 @@ namespace BSUIR.Web.Areas.Identity.Pages.Account
                     }
                     else
                     {
+                        
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         return LocalRedirect(returnUrl);
                     }

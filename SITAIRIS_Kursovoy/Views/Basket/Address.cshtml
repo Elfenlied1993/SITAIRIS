@@ -1,4 +1,6 @@
-﻿
+﻿@using BSUIR.BL.Interfaces.Models
+@using BSUIR.BL.Interfaces.Models.DeliveryAddresses
+@inject Basket _Basket;
 @{
     ViewData["Title"] = "Address";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -10,29 +12,54 @@
     <div class="card-block card-delivery">
         <div class="card-delivery-head clearfix">
             <div style="float: right" class="btn-group btn-group-toggle" data-toggle="buttons">
-                <label class="btn btn-dark">
-                    <input type="radio" name="options" value="М" id="option1" autocomplete="off" checked="">Списком
+                <label class="btn btn-dark active" onclick="
+document.getElementById('selfInShopList').style.display = 'block';
+console.log('list');
+document.getElementById('map_canvas').style.display = 'none';
+document.getElementById('delivery').style.display = 'none';
+" id="option1">
+                    <input type="radio" name="options" value="М" autocomplete="off" checked="">Списком
                 </label>
-                <label class="btn btn-danger active">
-                    <input type="radio" name="options" value="Ж" id="option2" autocomplete="off">На карте
+                <label onclick="
+document.getElementById('selfInShopList').style.display = 'none';
+console.log('map');
+document.getElementById('map_canvas').style.display = 'block';
+document.getElementById('delivery').style.display = 'none';
+" class="btn btn-danger" id="option2">
+                    <input type="radio" name="options" value="Ж" autocomplete="off">На карте
                 </label>
             </div><div>
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-danger active">
-                        <input type="radio" name="options" value="М" id="option1" autocomplete="off" checked="">Забрать в магазине
+                    <label ONCLICK="
+document.getElementById('delivery').style.display = 'none';
+document.getElementById('option1').style.display = 'block';
+document.getElementById('option2').style.display = 'block';
+console.log('magazin');
+
+if (document.getElementById('option1').classList.contains('active'))
+    document.getElementById('selfInShopList').style.display = 'block';
+else
+{
+    document.getElementById('map_canvas').style.display = 'block';
+}" class="btn btn-danger active" id="option3">
+                        <input type="radio" name="options" value="М" autocomplete="off" checked="">Забрать в магазине
                     </label>
-                    <label class="btn btn-dark">
-                        <input type="radio" name="options" value="Ж" id="option2" autocomplete="off"> История
+                    <label class="btn btn-dark" onclick="
+document.getElementById('map_canvas').style.display = 'none';
+document.getElementById('selfInShopList').style.display = 'none';
+document.getElementById('delivery').style.display = 'block';
+console.log('dostavka');
+document.getElementById('option1').style.display='none'
+document.getElementById('option2').style.display='none'" id="option4">
+                        <input type="radio"
+                               name="options" value="Ж" autocomplete="off"> Доставка на дом
                     </label>
                 </div>
             </div>
-
-            <div>
-
-            </div>
         </div>
-        <div class="card-delivery-content clearfix">
+        <div class="card-delivery-content clearfix" id="selfInShopList">
             <div>
+
                 <div id="delivery-shop" class="card-delivery-shop">
                     <div id="delivery-shop-list" class="card-delivery-shop-list">
                         <table class="cleaned shops-list">
@@ -42,11 +69,54 @@
                                 <th width="30%" class="text-left">Режим работы магазина</th>
                                 <th></th>
                             </tr>
-                            <tr>
-                                <td><a target="_blank">ул. Денисовская, 8 (ТЦ "Корона-Сити")</a></td>
-                                <td class="text-left">с 11:00 до 20:00 (пн - чт)<br>с 10:00 до 21:00 (пт - вс)</td>
-                                <td><button class="button-select">Выбрать</button></td> <!---->
-                            </tr>
+                            @foreach (DeliveryAddress address in (IEnumerable<DeliveryAddress>) ViewData["DeliveryAddresses"])
+                            {
+                                <tr>
+                                    <td><a target="_blank">@address.City, @address.Street, @address.House</a></td>
+                                    <td class="text-left">@address.WorkingHours</td>
+                                    @if (!_Basket.IsDelivery && _Basket.AddressId == address.Id)
+                                    {
+                                        <td>
+                                            <button class="btn btn-secondary">
+                                                Выбрано
+                                            </button>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            <form asp-action="ChooseAddress" asp-controller="Basket" asp-route-id="@address.Id" asp-route-isdelivery="@false">
+                                                <input type="submit" class="btn btn-danger" value="Выбрать"/>
+                                            </form>
+                                        </td>
+                                    }
+                                    <!---->
+                                </tr>
+                            }
+                            </tbody>
+                        </table>
+                    </div> <!---->
+                </div> <!---->
+            </div> <!---->
+        </div>
+        <div style="display: none;height:400px;" id="map_canvas">
+        </div>
+        <div class="card-delivery-content clearfix" style="display : none" id="delivery">
+            <div>
+                <div id="delivery-shop" class="card-delivery-shop">
+                    <div id="delivery-shop-list" class="card-delivery-shop-list">
+                        <table class="cleaned shops-list">
+                            <tbody>
+                                <tr>
+                                    <th width="70%">Адрес магазина</th>
+                                    <th width="30%" class="text-left">Режим работы магазина</th>
+                                    <th></th>
+                                </tr>
+                                <tr>
+                                    <td><a target="_blank">ул. Денисовская, 8 (ТЦ "Корона-Сити")</a></td>
+                                    <td class="text-left">с 11:00 до 20:00 (пн - чт)<br>с 10:00 до 21:00 (пт - вс)</td>
+                                    <td><button class="button-select">Выбрать</button></td> <!---->
+                                </tr>
                             </tbody>
                         </table>
                     </div> <!---->

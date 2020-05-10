@@ -1,24 +1,28 @@
-﻿@model BSUIR.BL.Interfaces.Models.Items.Item
+﻿@using BSUIR.BL.Interfaces.Models.Photos
+@model BSUIR.BL.Interfaces.Models.Items.Item
 
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@{
+    List<Photo> photos = (List<Photo>) ViewData["Photos"];
+}
 <div class="content-row">
     <div class="product-card-container">
         <div class="product-card-container-left">
-            <h1 class="product-card-h1">@*@Html.DisplayFor(model=>model.Name)*@Test</h1>
+            <h1 class="product-card-h1">@Model.Name</h1>
             <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <img src="https://drive.google.com/uc?export=view&id=1KY0C3CTIQuSZXY1AnidVfN7pNG1xwh3e" class="d-block w-100" alt="...">
+                        <img src="@photos.ElementAt(0).Link" class="d-block w-100" alt="...">
                     </div>
-                    @*@for(int i = 1; i<)*@
-                    @*<div class="carousel-item">
-                            <img src="https://sun9-23.userapi.com/c851520/v851520981/11f77b/FeRGdZZd4F0.jpg" class="d-block w-100" alt="...">
-                        </div>*@
-
+                    @for (int i = 1; i < photos.Count-1;i++)
+                    {
+                        <div class="carousel-item">
+                            <img src="@photos.ElementAt(i).Link" class="d-block w-100" alt="...">
+                        </div>
+                    }
                 </div>
                 <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -37,12 +41,12 @@
 
 
                 <div class="price-block  js-price-block">
-                    <span class="_price">1 872<sup>.00</sup></span>
+                    <span class="_price">@Model.Price</span>
                 </div>
                 <div class="row flex-buy-buttons-mob-product">
-                    <button class="spec-product-right-button button">
-                        <span class="js-to-cart-text">В корзину</span>
-                    </button>
+                    <form method="post" asp-controller="Items" asp-action="Index" asp-route-id="@Model.CategoryId">
+                        <input type="submit" class="btn btn-danger" value="Добавить в корзину" />
+                    </form>
                 </div>
             </div>
         </div>
@@ -61,45 +65,47 @@
                                 <th class="property">
                                     Производитель
                                 </th>
-                                <td>С нижней морозильной камерой</td>
+                                <td>@Model.Producer</td>
                             </tr>
                             <tr>
                                 <th class="property">Тип</th>
-                                <td>2</td>
+                                <td>@Model.Type</td>
                             </tr>
                             <tr>
                                 <th class="property">
                                     Мощность
                                 </th>
-                                <td>Полный</td>
+                                <td>@Model.Power вт</td>
                             </tr>
                             <tr>
                                 <th class="property">
                                     Длина
                                 </th>
-                                <td>1</td>
+                                <td>@Model.Length см</td>
                             </tr>
                             <tr>
                                 <th class="property">
                                     Ширина
                                 </th>
-                                <td>384 л</td>
+                                <td>@Model.Width см</td>
                             </tr>
                             <tr>
                                 <th class="property">
                                     Высота
                                 </th>
-                                <td class="desc-yes"></td>
+                                <td class="desc-yes">
+                                    @Model.Height см
+                                </td>
                             </tr>
                             <tr>
                                 <th class="property">
                                     Вес
                                 </th>
-                                <td>Электронное</td>
+                                <td>@Model.Weight кг</td>
                             </tr>
                             <tr>
-                                <th class="property">Метериал</th>
-                                <td>A++</td>
+                                <th class="property">Материал</th>
+                                <td>@Model.Material</td>
                             </tr>
                             </tbody>
                         </table>
@@ -108,7 +114,7 @@
                             <tr><th class="uppercase group-name" colspan="2">Описание</th></tr>
 
                             <tr>
-                                <td class="property">Размораживание холодильной камерыыыыыыыыыыыыыыыыыыыыыыыкамерыыыыыыыыыыыыыыыыыыыыыыыкамерыыыыыыыыыыыыыыыыыыыыыыыкамерыыыыыыыыыыыыыыыыыыыыыыыкамерыыыыыыыыыыыыыыыыыыыыыыыы</td>
+                                <td class="property">@Model.Description</td>
                             </tr>
                             </tbody>
                         </table>
@@ -119,20 +125,20 @@
                             </tr>
                             <tr>
                                 <th class="property">Гарантия</th>
-                                <td> 12</td>
+                                <td>@Model.Guarantee</td>
                             </tr>
                             <tr>
                                 <th class="property">Срок службы</th>
-                                <td>3</td>
+                                <td>@Model.Validity</td>
                             </tr>
                             <tr>
                                 <th class="property">Страна происхождения (производства)</th>
-                                <td>Китай</td>
+                                <td>@Model.Country</td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
-                    <button class="button" style="padding-left :50PX;width: 35%; margin-left: 30%;margin-top : 50px">
+                    <button onclick="window.location.href='@Url.Action("Index", "Home", new {id = Model.CategoryId})'" class="button" style="padding-left :50PX;width: 35%; margin-left: 30%;margin-top : 50px">
                         Вернуться к списку товаров
                     </button>
                 </div>

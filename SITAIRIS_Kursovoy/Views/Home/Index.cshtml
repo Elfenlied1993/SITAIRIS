@@ -1,4 +1,7 @@
-﻿@model List<BSUIR.BL.Interfaces.Models.Coordinates>;
+﻿@using BSUIR.BL.Interfaces.Models
+@using BSUIR.BL.Interfaces.Models.DeliveryAddresses
+
+@model List<BSUIR.BL.Interfaces.Models.Marker>;
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -45,11 +48,13 @@
                         <th width="30%" class="text-left">Режим работы магазина</th>
                         <th></th>
                     </tr>
-                    <tr>
-                        <td><a target="_blank">ул. Денисовская, 8 (ТЦ "Корона-Сити")</a></td>
-                        <td class="text-left">с 11:00 до 20:00 (пн - чт)<br>с 10:00 до 21:00 (пт - вс)</td>
-                        <td><button class="button-select">Выбрать</button></td> <!---->
-                    </tr>
+                    @foreach (DeliveryAddress address in (IEnumerable<DeliveryAddress>) ViewData["DeliveryAddresses"])
+                    {
+                        <tr>
+                            <td><a target="_blank">@address.City, @address.Street, @address.House</a></td>
+                            <td class="text-left">@address.WorkingHours</td>
+                        </tr>
+                    }
                     </tbody>
                 </table>
             </div> <!---->

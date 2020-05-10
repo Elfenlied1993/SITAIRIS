@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using AutoMapper;
+using BSUIR.BL.Interfaces.Models;
 using BSUIR.Configuration;
 using BSUIR.DAL;
 using Microsoft.AspNetCore.Builder;
@@ -28,11 +29,12 @@ namespace BSUIR.Web
             services.AddControllersWithViews();
             services.AddCors();
             services.AddMvc();
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies().Where(x=>x.FullName.Contains("BSUIR")));
-            services.AddIdentity<User, IdentityRole>()
+            services.ConfigureServices(this.Configuration);
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies().Where(x => x.FullName.Contains("BSUIR")).ToArray());
+            services.AddIdentity<User, IdentityRole>(opt => { opt.SignIn.RequireConfirmedEmail = false; })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<InternetShopContext>();
-            services.ConfigureServices(this.Configuration);
+            services.AddSingleton<Basket>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,7 +65,7 @@ namespace BSUIR.Web
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Basket}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using BSUIR.BL.Interfaces.Models
+@using BSUIR.BL.Interfaces.Models.Categories
+@using BSUIR.BL.Interfaces.Services
+@inject ICategoryService CategoryService;
+@inject Basket _basket;
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -29,17 +34,26 @@
         <form method="get" asp-controller="Items" asp-action="Index">
             <p>
                 <input class="searchbox-form-text" placeholder="Поиск..." type="search" name="SearchString" value="" autocomplete="off" autocorrect="off" style="width: 25%;margin-left: 35%; display:inline-block">
-                <input class="button" type="submit" value="Поиск" style="width: 50px;margin-top: 13px; height: 35px; padding-top: 8px; padding-left: 5px">
+                <input class="btn btn-danger" type="submit" value="Поиск">
             </p>
         </form>
     }
+    <div style="float: right; margin-right : 20%; margin-bottom: 20px">
+        <button class="btn btn-danger"  onclick="window.location.href='@Url.Action("Index", "Basket")'">Корзина</button>
+        <label  class="btn btn-dark" style="display: inline-block">
+            @_basket.Price BYN
+        </label>
+    </div>
     <div class="page-content page-content-product-card-3">
         <div class="container">
             <nav class="menu-goods">
                 <ul>
-                    <li>
-                        <a href="/catalog/9-telefony-i-planshety">Телефоны и планшеты</a>
-                    </li>
+                    @foreach (Category category in await CategoryService.GetCategoriesAsync<Category>())
+                    {
+                        <li>
+                            <a asp-action="Index" asp-controller="Items" asp-route-id="@category.Id">@category.Name</a>
+                        </li>
+                    }
                 </ul>
             </nav>
             <main role="main" class="pb-3">
@@ -59,50 +73,55 @@
     <script src="~/js/production.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCH83Y2YXXGpnsfUDbXRjH4Q-8saKUqgyc"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script>
+    @if (ViewData["Title"] == "Home Page" || ViewData["Title"] == "Address")
+    {
+        <script>
 
-    var cities = @Html.Raw(Json.Serialize(Model));
-//console.log(cities);
-
-
-
-    $(document).ready(function() {
-        // execute
-        (function initMap() {
-            // map options
-            var options = {
-                zoom: 5,
-                center: new google.maps.LatLng(45.1479007, 7.4386887),
-                mapTypeId: google.maps.MapTypeId.TERRAIN,
-                mapTypeControl: false
-            };
-
-            // init map
-            var map = new google.maps.Map(document.getElementById('map_canvas'), options);
+            var cities = @Html.Raw(Json.Serialize(Model));
+            //console.log(cities);
 
 
-            for (var i = 0; i < cities.length; i++) {
-                // init markers
-                var marker = new google.maps.Marker({
-                    position: new google.maps.LatLng(cities[i].lat, cities[i].lng),
-                    map: map,
-                    title: 'hello'
-                });
-                console.log(cities[i].lat + ' ' + cities[i].lng);
-                // process multiple info windows
-                (function (marker, i) {
-                    // add click event
-                    google.maps.event.addListener(marker, 'click', function () {
-                        infowindow = new google.maps.InfoWindow({
-                            content: 'hello'
+            $(document).ready(function() {
+                // execute
+                (function initMap() {
+                    // map options
+                    var options = {
+                        zoom: 13,
+                        center: new google.maps.LatLng(53.907946, 27.527199),
+                        mapTypeId: google.maps.MapTypeId.TERRAIN,
+                        mapTypeControl: false
+                    };
+
+                    // init map
+                    var map = new google.maps.Map(document.getElementById('map_canvas'), options);
+              
+
+                    for (var i = 0; i < cities.length; i++) {
+                        // init markers
+                        var marker = new google.maps.Marker({
+                            position: new google.maps.LatLng(cities[i].lat, cities[i].lng),
+                            map: map,
+                            title: cities[i].address
                         });
-                        infowindow.open(map, marker);
-                    });
-                })(marker, i);
-            }
-        })();
-    });
-    </script>
+                        console.log(cities[i].lat + ' ' + cities[i].lng);
+                        // process multiple info windows
+                        (function(marker, i) {
+                            // add click event
+                            google.maps.event.addListener(marker,
+                                'click',
+                                function() {
+                                    infowindow = new google.maps.InfoWindow({
+                                        content: cities[i].address
+                                    });
+                                    infowindow.open(map, marker);
+                                });
+                        })(marker, i);
+                    }
+                })();
+            });
+
+        </script>
+    }
     @RenderSection("Scripts", required: false)
 </body>
 </html>
