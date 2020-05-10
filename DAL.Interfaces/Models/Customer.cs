@@ -18,7 +18,7 @@ namespace BSUIR.DAL.Interfaces.Models
         public DateTime Birthdate { get; set; }
         public string MobileNumber { get; set; }
         public string Sex { get; set; }
-        public int Discount { get; set; }
+        public int? Discount { get; set; }
 
         public virtual User IdNavigation { get; set; }
         public virtual ICollection<Address> Address { get; set; }

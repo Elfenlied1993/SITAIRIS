@@ -16,7 +16,7 @@ namespace BSUIR.BL.Interfaces.Models.Customers
         public DateTime Birthdate { get; set; }
         public string MobileNumber { get; set; }
         public string Sex { get; set; }
-        public int Discount { get; set; }
+        public int? Discount { get; set; }
         public string UserId { get; set; }
     }
 }

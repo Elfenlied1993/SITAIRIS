@@ -52,10 +52,10 @@
                                         
                                         <div class="btn-group btn-group-toggle" data-toggle="buttons">
                                             <label class="btn btn-secondary active">
-                                                <input type="radio" name="options" asp-for="Input.Sex" value="М" id="option1" autocomplete="off" checked=""> М
+                                                <input type="radio" asp-for="Input.Sex" value="М" id="option1" autocomplete="off" checked=""> М
                                             </label>
                                             <label class="btn btn-secondary">
-                                                <input type="radio" name="options" asp-for="Input.Sex" value="Ж" id="option2" autocomplete="off"> Ж
+                                                <input type="radio" asp-for="Input.Sex" value="Ж" id="option2" autocomplete="off"> Ж
                                             </label>
                                         </div>                
                                         
@@ -70,7 +70,7 @@
 
                                     <div class="form-row">
                                         <label class="form-label" for="birthday">Дата рождения</label>
-                                        <input asp-for="Input.Date" type="date" name="birthday" placeholder="дд.мм.гггг">
+                                        <input asp-for="Input.Date" type="date" placeholder="дд.мм.гггг">
                                     </div>
 
                                     <div asp-validation-summary="All" class="text-danger"></div>

@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using BSUIR.BL.Interfaces.Services;
 using BSUIR.DAL.Interfaces.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Manage.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Customer = BSUIR.BL.Interfaces.Models.Customers.Customer;
 
 namespace BSUIR.Web.Areas.Identity.Pages.Account.Manage
 {
@@ -17,14 +19,16 @@ namespace BSUIR.Web.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<ChangePasswordModel> _logger;
+        private readonly ICustomerService _customerService;
 
         public IndexModel(
             UserManager<User> userManager,
-            SignInManager<User> signInManager, ILogger<ChangePasswordModel> logger)
+            SignInManager<User> signInManager, ILogger<ChangePasswordModel> logger, ICustomerService customerService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _customerService = customerService;
         }
 
 
@@ -39,12 +43,10 @@ namespace BSUIR.Web.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Телефон")]
             public string PhoneNumber { get; set; }
-            [Required]
             [DataType(DataType.Password)]
             [Display(Name = "Current password")]
             public string OldPassword { get; set; }
 
-            [Required]
             [StringLength(100, ErrorMessage = "{0} должен содержать минимум {2} и максимум {1} символов.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Новый пароль")]
@@ -59,6 +61,7 @@ namespace BSUIR.Web.Areas.Identity.Pages.Account.Manage
             public string SecondName { get; set; }
             public string LastName { get; set; }
             public string Sex { get; set; }
+            [DataType(DataType.Date)] 
             public DateTime Date { get; set; }
 
             public string Email { get; set; }
@@ -66,13 +69,19 @@ namespace BSUIR.Web.Areas.Identity.Pages.Account.Manage
 
         private async Task LoadAsync(User user)
         {
+            var customer = await _customerService.GetCustomerByIdAsync<Customer>(user.Id);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             var email = await _userManager.GetEmailAsync(user);
 
             Input = new InputModel
             {
+                Sex = customer.Sex,
+                LastName = customer.Lastname,
+                Date = customer.Birthdate,
+                FirstName = customer.Firstname,
+                SecondName = customer.Secondname,
                 PhoneNumber = phoneNumber,
-                Email= email
+                Email = email
             };
         }
 
@@ -103,7 +112,7 @@ namespace BSUIR.Web.Areas.Identity.Pages.Account.Manage
             }
 
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            if (Input.PhoneNumber != phoneNumber)   
+            if (Input.PhoneNumber != phoneNumber)
             {
                 var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
                 if (!setPhoneResult.Succeeded)
@@ -113,15 +122,30 @@ namespace BSUIR.Web.Areas.Identity.Pages.Account.Manage
                 }
             }
 
-            var changeEmail = await _userManager.SetEmailAsync(user, Input.Email);
-            var changePasswordResult = await _userManager.ChangePasswordAsync(user, Input.OldPassword, Input.NewPassword);
-            if (!changePasswordResult.Succeeded)
+            await _customerService.UpdateCustomerAsync<Customer>(new Customer()
             {
-                foreach (var error in changePasswordResult.Errors)
+                Id = user.Id,
+                Birthdate = Input.Date,
+                Firstname = Input.FirstName,
+                Lastname = Input.LastName,
+                MobileNumber = Input.PhoneNumber,
+                Secondname = Input.SecondName,
+                Sex = Input.Sex
+            });
+            var changeEmail = await _userManager.SetEmailAsync(user, Input.Email);
+            if (Input.OldPassword != null)
+            {
+                var changePasswordResult =
+                    await _userManager.ChangePasswordAsync(user, Input.OldPassword, Input.NewPassword);
+                if (!changePasswordResult.Succeeded)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    foreach (var error in changePasswordResult.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+
+                    return Page();
                 }
-                return Page();
             }
 
             await _signInManager.RefreshSignInAsync(user);

@@ -61,13 +61,7 @@
             </main>
         </div>
     </div>
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2020 - E-shop.by - <a asp-area="" asp-controller="Home" asp-action="Privacy">Политика конфиденциальности</a>
-        </div>
-    </footer>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/production.js"></script>
@@ -108,13 +102,26 @@
                         (function(marker, i) {
                             // add click event
                             google.maps.event.addListener(marker,
-                                'click',
+                                'mouseenter',
                                 function() {
                                     infowindow = new google.maps.InfoWindow({
                                         content: cities[i].address
                                     });
                                     infowindow.open(map, marker);
                                 });
+                            if(document.title!='Home Page - SITAIRIS_Kursovoy')
+                            google.maps.event.addListener(marker,
+                                'click',
+                                function() {
+                                    var form = document.createElement('form');
+                                    form.action = '/Basket/ChooseAddress';
+                                    form.method = 'post';
+                                    form.innerHTML = '<input name="id" value="'+cities[i].addressId+'">' +
+                                        '<input name="isdelivery" value="false">';
+// перед отправкой формы, её нужно вставить в документ
+                                    document.body.append(form);
+                                    form.submit();
+                                })
                         })(marker, i);
                     }
                 })();

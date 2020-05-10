@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BSUIR.BL.Interfaces.Models;
-using BSUIR.BL.Interfaces.Models.DeliveryAddresses;
 using BSUIR.BL.Interfaces.Services;
+using BSUIR.DAL.Interfaces.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Address = BSUIR.BL.Interfaces.Models.Addresses.Address;
+using DeliveryAddress = BSUIR.BL.Interfaces.Models.DeliveryAddresses.DeliveryAddress;
 
 namespace BSUIR.Web.Controllers
 {
@@ -14,19 +17,89 @@ namespace BSUIR.Web.Controllers
     {
         private Basket _basket;
         private readonly IDeliveryAddressService _deliveryAddressService;
-
-        public BasketController(Basket basket, IDeliveryAddressService deliveryAddressService)
+        private readonly IAddressService _addressService;
+        private readonly UserManager<User> _userManager;
+        public BasketController(Basket basket, IDeliveryAddressService deliveryAddressService, IAddressService addressService, UserManager<User> userManager)
         {
             _basket = basket;
             _deliveryAddressService = deliveryAddressService;
+            _addressService = addressService;
+            _userManager = userManager;
         }
-
+        [HttpPost]
+        public async Task<IActionResult> UpdateAddress(string Id, string Country, string Area, string City, string Street, string Building, string Postal, string Flat)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            await _addressService.UpdateAddressAsync<Address>(new Address()
+            {
+                City = City,
+                Country = Country,
+                CustomerId = user.Id,
+                Flat = Convert.ToInt32(Flat),
+                House = Convert.ToInt32(Building),
+                PostIndex = Convert.ToInt32(Postal),
+                Street = Street,
+                Region = Area,
+                Id = Convert.ToInt32(Id)
+            });
+            var addresses = await _addressService.GetAddressesAsync<Address>();
+            ViewData["Addresses"] = addresses.Where(x => x.CustomerId == user.Id).ToList();
+            var coordinates = new List<Marker>();
+            foreach (var address in await _deliveryAddressService.GetDeliveryAddressesAsync<DeliveryAddress>())
+            {
+                var coordinatesJson = JsonConvert.DeserializeObject<Coordinates>(address.Coordinates);
+                coordinates.Add(new Marker()
+                {
+                    Address = address.Street + ", " + address.House,
+                    AddressId = address.Id,
+                    Lat = coordinatesJson.Lat,
+                    Lng = coordinatesJson.Lng
+                });
+            }
+            ViewData["DeliveryAddresses"] = await _deliveryAddressService.GetDeliveryAddressesAsync<DeliveryAddress>();
+            return View("Address",coordinates);
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddAddress(string Country, string Area, string City, string Street, string Building, string Postal, string Flat)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            await _addressService.CreateAddressAsync<Address>(new Address()
+            {
+                City = City,
+                Country = Country,
+                CustomerId = user.Id,
+                Flat = Convert.ToInt32(Flat),
+                House = Convert.ToInt32(Building),
+                PostIndex = Convert.ToInt32(Postal),
+                Street = Street,
+                Region = Area
+            });
+            var addresses = await _addressService.GetAddressesAsync<Address>();
+            ViewData["Addresses"] = addresses.Where(x => x.CustomerId == user.Id).ToList();
+            var coordinates = new List<Marker>();
+            foreach (var address in await _deliveryAddressService.GetDeliveryAddressesAsync<DeliveryAddress>())
+            {
+                var coordinatesJson = JsonConvert.DeserializeObject<Coordinates>(address.Coordinates);
+                coordinates.Add(new Marker()
+                {
+                    Address = address.Street + ", " + address.House,
+                    AddressId = address.Id,
+                    Lat = coordinatesJson.Lat,
+                    Lng = coordinatesJson.Lng
+                });
+            }
+            ViewData["DeliveryAddresses"] = await _deliveryAddressService.GetDeliveryAddressesAsync<DeliveryAddress>();
+            return View("Address", coordinates);
+        }
         public IActionResult Index()
         {
             return View();
         }
         public async  Task<IActionResult> Address()
         {
+            var user = await _userManager.GetUserAsync(User);
+            var addresses = await _addressService.GetAddressesAsync<Address>();
+            ViewData["Addresses"] = addresses.Where(x => x.CustomerId == user.Id).ToList();
             var coordinates = new List<Marker>();
             foreach (var address in await _deliveryAddressService.GetDeliveryAddressesAsync<DeliveryAddress>())
             {
@@ -47,6 +120,10 @@ namespace BSUIR.Web.Controllers
         {
             _basket.IsDelivery = isdelivery;
             _basket.AddressId = id;
+            var user = await _userManager.GetUserAsync(User);
+            var addresses = await _addressService.GetAddressesAsync<Address>();
+            ViewData["Addresses"] = addresses.Where(x => x.CustomerId == user.Id).ToList();
+
             var coordinates = new List<Marker>();
             foreach (var address in await _deliveryAddressService.GetDeliveryAddressesAsync<DeliveryAddress>())
             {

@@ -45,16 +45,16 @@ namespace BSUIR.DAL
                     .IsRequired()
                     .HasColumnName("city")
                     .HasMaxLength(45)
-                    .IsUnicode(false);
+                    .IsUnicode(true);
 
                 entity.Property(e => e.Country)
                     .IsRequired()
                     .HasColumnName("country")
                     .HasMaxLength(45)
-                    .IsUnicode(false);
+                    .IsUnicode(true);
 
                 entity.Property(e => e.CustomerId).HasColumnName("customer_id").HasMaxLength(500)
-                    .IsUnicode(false);
+                    .IsUnicode(true);
 
                 entity.Property(e => e.Flat).HasColumnName("flat");
 
@@ -66,13 +66,13 @@ namespace BSUIR.DAL
                     .IsRequired()
                     .HasColumnName("region")
                     .HasMaxLength(45)
-                    .IsUnicode(false);
+                    .IsUnicode(true);
 
                 entity.Property(e => e.Street)
                     .IsRequired()
                     .HasColumnName("street")
                     .HasMaxLength(45)
-                    .IsUnicode(false);
+                    .IsUnicode(true);
 
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.Address)
@@ -91,7 +91,7 @@ namespace BSUIR.DAL
                     .IsRequired()
                     .HasColumnName("name")
                     .HasMaxLength(45)
-                    .IsUnicode(false);
+                    .IsUnicode(true);
             });
 
             modelBuilder.Entity<Customer>(entity =>
@@ -109,34 +109,29 @@ namespace BSUIR.DAL
                 entity.Property(e => e.Discount).HasColumnName("discount");
 
                 entity.Property(e => e.Firstname)
-                    .IsRequired()
                     .HasColumnName("firstname")
                     .HasMaxLength(45)
-                    .IsUnicode(false);
+                    .IsUnicode(true);
 
                 entity.Property(e => e.Lastname)
-                    .IsRequired()
                     .HasColumnName("lastname")
                     .HasMaxLength(45)
-                    .IsUnicode(false);
+                    .IsUnicode(true);
 
                 entity.Property(e => e.MobileNumber)
-                    .IsRequired()
                     .HasColumnName("mobile_number")
                     .HasMaxLength(45)
-                    .IsUnicode(false);
+                    .IsUnicode(true);
 
                 entity.Property(e => e.Secondname)
-                    .IsRequired()
                     .HasColumnName("secondname")
                     .HasMaxLength(45)
-                    .IsUnicode(false);
+                    .IsUnicode(true);
 
                 entity.Property(e => e.Sex)
-                    .IsRequired()
                     .HasColumnName("sex")
                     .HasMaxLength(45)
-                    .IsUnicode(false);
+                    .IsUnicode(true);
                 entity.HasOne(d => d.IdNavigation)
                     .WithOne(p => p.Customer)
                     .HasForeignKey<Customer>(d => d.Id)
@@ -154,19 +149,19 @@ namespace BSUIR.DAL
                     .IsRequired()
                     .HasColumnName("city")
                     .HasMaxLength(45)
-                    .IsUnicode(false);
+                    .IsUnicode(true);
 
                 entity.Property(e => e.Coordinates)
                     .IsRequired()
                     .HasColumnName("coordinates")
                     .HasMaxLength(200)
-                    .IsUnicode(false);
+                    .IsUnicode(true);
 
                 entity.Property(e => e.Country)
                     .IsRequired()
                     .HasColumnName("country")
                     .HasMaxLength(45)
-                    .IsUnicode(false);
+                    .IsUnicode(true);
 
                 entity.Property(e => e.Flat).HasColumnName("flat");
 
@@ -178,19 +173,19 @@ namespace BSUIR.DAL
                     .IsRequired()
                     .HasColumnName("region")
                     .HasMaxLength(45)
-                    .IsUnicode(false);
+                    .IsUnicode(true);
 
                 entity.Property(e => e.Street)
                     .IsRequired()
                     .HasColumnName("street")
                     .HasMaxLength(45)
-                    .IsUnicode(false);
+                    .IsUnicode(true);
 
                 entity.Property(e => e.WorkingHours)
                     .IsRequired()
                     .HasColumnName("working_hours")
                     .HasMaxLength(100)
-                    .IsUnicode(false);
+                    .IsUnicode(true);
             });
 
             modelBuilder.Entity<Discounts>(entity =>
@@ -222,13 +217,13 @@ namespace BSUIR.DAL
                     .IsRequired()
                     .HasColumnName("color")
                     .HasMaxLength(45)
-                    .IsUnicode(false);
+                    .IsUnicode(true);
 
                 entity.Property(e => e.Country)
                     .IsRequired()
                     .HasColumnName("country")
                     .HasMaxLength(45)
-                    .IsUnicode(false);
+                    .IsUnicode(true);
 
                 entity.Property(e => e.Date)
                     .HasColumnName("date")
@@ -237,7 +232,7 @@ namespace BSUIR.DAL
                 entity.Property(e => e.Description)
                     .HasColumnName("description")
                     .HasMaxLength(5000)
-                    .IsUnicode(false);
+                    .IsUnicode(true);
 
                 entity.Property(e => e.Guarantee).HasColumnName("guarantee");
 
@@ -253,13 +248,13 @@ namespace BSUIR.DAL
                     .IsRequired()
                     .HasColumnName("material")
                     .HasMaxLength(45)
-                    .IsUnicode(false);
+                    .IsUnicode(true);
 
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasColumnName("name")
                     .HasMaxLength(45)
-                    .IsUnicode(false);
+                    .IsUnicode(true);
 
                 entity.Property(e => e.Power).HasColumnName("power");
 
@@ -270,13 +265,13 @@ namespace BSUIR.DAL
                 entity.Property(e => e.Producer)
                     .HasColumnName("producer")
                     .HasMaxLength(45)
-                    .IsUnicode(false);
+                    .IsUnicode(true);
 
                 entity.Property(e => e.Type)
                     .IsRequired()
                     .HasColumnName("type")
                     .HasMaxLength(45)
-                    .IsUnicode(false);
+                    .IsUnicode(true);
 
                 entity.Property(e => e.Validity).HasColumnName("validity");
 
@@ -306,10 +301,10 @@ namespace BSUIR.DAL
                 entity.Property(e => e.Comment)
                     .HasColumnName("comment")
                     .HasMaxLength(500)
-                    .IsUnicode(false);
+                    .IsUnicode(true);
 
                 entity.Property(e => e.CustomerId).HasColumnName("customer_id").HasMaxLength(500)
-                    .IsUnicode(false);
+                    .IsUnicode(true);
 
                 entity.Property(e => e.Date)
                     .HasColumnName("date")
@@ -321,7 +316,7 @@ namespace BSUIR.DAL
                     .IsRequired()
                     .HasColumnName("status")
                     .HasMaxLength(45)
-                    .IsUnicode(false);
+                    .IsUnicode(true);
 
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.Order)
@@ -373,13 +368,13 @@ namespace BSUIR.DAL
                     .IsRequired()
                     .HasColumnName("link")
                     .HasMaxLength(200)
-                    .IsUnicode(false);
+                    .IsUnicode(true);
 
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasColumnName("name")
                     .HasMaxLength(45)
-                    .IsUnicode(false);
+                    .IsUnicode(true);
 
                 entity.HasOne(d => d.Item)
                     .WithMany(p => p.Photo)
