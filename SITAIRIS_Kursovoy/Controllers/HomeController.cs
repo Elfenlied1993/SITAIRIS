@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using BSUIR.BL.Interfaces.Models;
 using BSUIR.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -16,7 +18,23 @@ namespace BSUIR.Web.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var coordinates = new List<Coordinates>();
+            coordinates.Add(new Coordinates()
+            {
+                Lat = 48.855901,
+                Lng = 2.349272
+            });
+            coordinates.Add(new Coordinates()
+            {
+                Lat = 52.520413,
+                Lng = 13.402794
+            });
+            coordinates.Add(new Coordinates()
+            {
+                Lat = 41.907074,
+                Lng = 12.498474
+            });
+            return View(coordinates);
         }
 
         public IActionResult Privacy()

@@ -7663,7 +7663,7 @@ input:checked + label > .switch-inactive {
 .one-shop-card .one-shop-card-body .one-shop-card-body-info-item h4.one-shop-card-body-info-item-title {
   margin-bottom: 0.625rem;
   font-family: "MyriadProBold", Arial, sans-serif;
-  font-size: 1.5rem;
+  font-size: 1.rem;
   line-height: 1.2;
   color: #3f3f3f;
 }
@@ -27452,8 +27452,9 @@ textarea.form-input::placeholder {
     border-color: #c1c1c2;
 }
 .cabinet-popup-delivery .cabinet-popup-address {
-    margin-top: 45px;
-    padding: 30px 0 0 0;
+    margin-top: 15px;
+    padding: 15px 0 0 0;
+    padding: 15px 0 0 0;
     border-top: 1px solid #eee;
 }
 .cabinet-popup-delivery .form-region-select.form-error-field .jq-selectbox.stylize-select-v2 {
@@ -29085,7 +29086,7 @@ textarea.form-input::placeholder {
     padding: 0.9em 3em 0.6em;
 }
 .desktop-table__cell.shopping-cart__container.js-summary{
-    width: 40%;
+    width: 100%;
     display: inline-flex;
 }
 .desktop-table__cell.shopping-cart__container.for-promocode{

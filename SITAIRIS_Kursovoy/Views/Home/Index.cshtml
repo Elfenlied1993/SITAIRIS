@@ -1,7 +1,58 @@
-﻿@{
+﻿@model List<BSUIR.BL.Interfaces.Models.Coordinates>;
+@{
     ViewData["Title"] = "Home Page";
 }
+<h1 style="margin-top: 15px" class="h1">О компании</h1>
+<div class="banner-company">
+    <img width="890" src="https://5element.by/upload/images/company/main-1.jpg" height="285"><br>
+</div>
+<div class="text-block">
+    <div class="text-block">
+        «5 элемент» – это динамичная, эффективная и успешная национальная компания, предлагающая наилучшие решения для покупки электроники и бытовой техники для всех жителей Беларуси.<br>
+        <br>
+        <ul>
+            <li><a href="/company/success">более 3 000 специалистов</a><br>
+            </li>
+            <li>60 000 кв.м. торговых площадей </li>
+            <li><a href="http://5element.by/shops">65</a><a href="http://5element.by/shops">&nbsp;розничных магази</a><a href="http://5element.by/shops">на</a></li>
+            <li>34 города присутствия сети </li>
+            <li>более 30 000 звонков в колл-центр ежемесячно<br>
+            </li>
+            <li>более 80 партнеров</li>
+            <li>более 1 500 000 участников <a href="https://5element.by/company/bonus">Клуба покупателей «5 элемент»</a></li>
+            <li>Более 20 000 наименований товаров, представленных в сети магазинов, а также на сайте 5element.by</li>
+            <li>Более 2000 акций ежегодно</li>
+            <li>Более 100 товаров по суперценам каждый день</li>
+            <li>Тысячи товаров в рассрочку без переплат</li>
+            <li>Сервисная поддержка и беспроблемный возврат<br>
+            </li>
+        </ul>
+        <br>
+        По исследованию международной компании в <b>«5 элементе» </b>приобретается&nbsp;каждый второй телевизор, пылесос, фотоаппарат, каждая третья стиральная машина, каждый четвертый холодильник.
+    </div>
+</div>
+<div class="text-center" style="height:400px;" id="map_canvas">
 
-<div class="text-center">
-
+</div>
+<div class="card-delivery-content clearfix">
+    <div>
+        <div id="delivery-shop" class="card-delivery-shop">
+            <div id="delivery-shop-list" class="card-delivery-shop-list">
+                <table class="cleaned shops-list">
+                    <tbody>
+                    <tr>
+                        <th width="70%">Адрес магазина</th>
+                        <th width="30%" class="text-left">Режим работы магазина</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td><a target="_blank">ул. Денисовская, 8 (ТЦ "Корона-Сити")</a></td>
+                        <td class="text-left">с 11:00 до 20:00 (пн - чт)<br>с 10:00 до 21:00 (пт - вс)</td>
+                        <td><button class="button-select">Выбрать</button></td> <!---->
+                    </tr>
+                    </tbody>
+                </table>
+            </div> <!---->
+        </div> <!---->
+    </div> <!---->
 </div>

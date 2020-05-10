@@ -63,7 +63,7 @@ namespace BSUIR.Web
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Items}/{action=Details}/{id?}");
+                    pattern: "{controller=Basket}/{action=Index}/{id?}");
             });
         }
     }

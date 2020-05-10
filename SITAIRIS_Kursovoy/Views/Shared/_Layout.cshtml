@@ -9,29 +9,30 @@
     <link rel="stylesheet" href="~/css/production.css" />
 </head>
 <body>
-<header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-dark border-bottom box-shadow mb-3">
-        <div class="container">
-            <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index">О МАГАЗИНЕ</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end text-white">E-shop.by</div>
-            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                <partial name="_LoginPartial" />
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-dark border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index">О МАГАЗИНЕ</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end text-white" style="margin-left: 15%">E-shop.by</div>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <partial name="_LoginPartial" />
+                </div>
             </div>
-        </div>
-    </nav>
-</header>
-@if (ViewData["Title"]=="Index" || ViewData["Title"]=="Details") {
-        <form method="get"  asp-controller="Items" asp-action="Index" >
+        </nav>
+    </header>
+    @if (ViewData["Title"] == "Index" || ViewData["Title"] == "Details")
+    {
+        <form method="get" asp-controller="Items" asp-action="Index">
             <p>
                 <input class="searchbox-form-text" placeholder="Поиск..." type="search" name="SearchString" value="" autocomplete="off" autocorrect="off" style="width: 25%;margin-left: 35%; display:inline-block">
                 <input class="button" type="submit" value="Поиск" style="width: 50px;margin-top: 13px; height: 35px; padding-top: 8px; padding-left: 5px">
             </p>
         </form>
-}
+    }
     <div class="page-content page-content-product-card-3">
         <div class="container">
             <nav class="menu-goods">
@@ -51,10 +52,57 @@
             &copy; 2020 - E-shop.by - <a asp-area="" asp-controller="Home" asp-action="Privacy">Политика конфиденциальности</a>
         </div>
     </footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/production.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCH83Y2YXXGpnsfUDbXRjH4Q-8saKUqgyc"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+
+    var cities = @Html.Raw(Json.Serialize(Model));
+//console.log(cities);
+
+
+
+    $(document).ready(function() {
+        // execute
+        (function initMap() {
+            // map options
+            var options = {
+                zoom: 5,
+                center: new google.maps.LatLng(45.1479007, 7.4386887),
+                mapTypeId: google.maps.MapTypeId.TERRAIN,
+                mapTypeControl: false
+            };
+
+            // init map
+            var map = new google.maps.Map(document.getElementById('map_canvas'), options);
+
+
+            for (var i = 0; i < cities.length; i++) {
+                // init markers
+                var marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(cities[i].lat, cities[i].lng),
+                    map: map,
+                    title: 'hello'
+                });
+                console.log(cities[i].lat + ' ' + cities[i].lng);
+                // process multiple info windows
+                (function (marker, i) {
+                    // add click event
+                    google.maps.event.addListener(marker, 'click', function () {
+                        infowindow = new google.maps.InfoWindow({
+                            content: 'hello'
+                        });
+                        infowindow.open(map, marker);
+                    });
+                })(marker, i);
+            }
+        })();
+    });
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

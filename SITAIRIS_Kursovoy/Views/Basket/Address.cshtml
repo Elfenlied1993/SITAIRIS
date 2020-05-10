@@ -1,0 +1,64 @@
+﻿
+@{
+    ViewData["Title"] = "Address";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div data-step="1." class="shopping-cart__step-title">&nbsp;Выберите способ доставки</div>
+<div>
+    <div class="card-block card-delivery">
+        <div class="card-delivery-head clearfix">
+            <div style="float: right" class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-dark">
+                    <input type="radio" name="options" value="М" id="option1" autocomplete="off" checked="">Списком
+                </label>
+                <label class="btn btn-danger active">
+                    <input type="radio" name="options" value="Ж" id="option2" autocomplete="off">На карте
+                </label>
+            </div><div>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-danger active">
+                        <input type="radio" name="options" value="М" id="option1" autocomplete="off" checked="">Забрать в магазине
+                    </label>
+                    <label class="btn btn-dark">
+                        <input type="radio" name="options" value="Ж" id="option2" autocomplete="off"> История
+                    </label>
+                </div>
+            </div>
+
+            <div>
+
+            </div>
+        </div>
+        <div class="card-delivery-content clearfix">
+            <div>
+                <div id="delivery-shop" class="card-delivery-shop">
+                    <div id="delivery-shop-list" class="card-delivery-shop-list">
+                        <table class="cleaned shops-list">
+                            <tbody>
+                            <tr>
+                                <th width="70%">Адрес магазина</th>
+                                <th width="30%" class="text-left">Режим работы магазина</th>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <td><a target="_blank">ул. Денисовская, 8 (ТЦ "Корона-Сити")</a></td>
+                                <td class="text-left">с 11:00 до 20:00 (пн - чт)<br>с 10:00 до 21:00 (пт - вс)</td>
+                                <td><button class="button-select">Выбрать</button></td> <!---->
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div> <!---->
+                </div> <!---->
+            </div> <!---->
+        </div>
+        <div class="step-next">
+            <!---->
+            <button onclick="window.location.href='@Url.Action("Confirm", "Basket")'" class="button button-next"> Оформить заказ</button>
+        </div>
+    </div>
+</div>
+
+
+

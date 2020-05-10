@@ -5,8 +5,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using BSUIR.DAL.Interfaces.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Manage.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Logging;
 
 namespace BSUIR.Web.Areas.Identity.Pages.Account.Manage
 {
@@ -14,16 +16,17 @@ namespace BSUIR.Web.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly ILogger<ChangePasswordModel> _logger;
 
         public IndexModel(
             UserManager<User> userManager,
-            SignInManager<User> signInManager)
+            SignInManager<User> signInManager, ILogger<ChangePasswordModel> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _logger = logger;
         }
 
-        public string Username { get; set; }
 
         [TempData]
         public string StatusMessage { get; set; }
@@ -34,20 +37,42 @@ namespace BSUIR.Web.Areas.Identity.Pages.Account.Manage
         public class InputModel
         {
             [Phone]
-            [Display(Name = "Phone number")]
+            [Display(Name = "Телефон")]
             public string PhoneNumber { get; set; }
+            [Required]
+            [DataType(DataType.Password)]
+            [Display(Name = "Current password")]
+            public string OldPassword { get; set; }
+
+            [Required]
+            [StringLength(100, ErrorMessage = "{0} должен содержать минимум {2} и максимум {1} символов.", MinimumLength = 6)]
+            [DataType(DataType.Password)]
+            [Display(Name = "Новый пароль")]
+            public string NewPassword { get; set; }
+
+            [DataType(DataType.Password)]
+            [Display(Name = "Confirm new password")]
+            [Compare("NewPassword", ErrorMessage = "Новый пароль и подтверждение пароля не совпадают.")]
+            public string ConfirmPassword { get; set; }
+
+            public string FirstName { get; set; }
+            public string SecondName { get; set; }
+            public string LastName { get; set; }
+            public string Sex { get; set; }
+            public DateTime Date { get; set; }
+
+            public string Email { get; set; }
         }
 
         private async Task LoadAsync(User user)
         {
-            var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-
-            Username = userName;
+            var email = await _userManager.GetEmailAsync(user);
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                Email= email
             };
         }
 
@@ -88,6 +113,18 @@ namespace BSUIR.Web.Areas.Identity.Pages.Account.Manage
                 }
             }
 
+            var changeEmail = await _userManager.SetEmailAsync(user, Input.Email);
+            var changePasswordResult = await _userManager.ChangePasswordAsync(user, Input.OldPassword, Input.NewPassword);
+            if (!changePasswordResult.Succeeded)
+            {
+                foreach (var error in changePasswordResult.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+                return Page();
+            }
+
+            return RedirectToPage();
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();
