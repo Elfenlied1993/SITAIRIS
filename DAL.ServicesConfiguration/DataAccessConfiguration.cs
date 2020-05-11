@@ -20,6 +20,7 @@ namespace BSUIR.DAL.ServicesConfiguration
             services.AddTransient<IOrdersContext, OrdersContext>();
             services.AddTransient<IPhotoContext, PhotoContext>();
             services.AddTransient<ICategoryContext, CategoryContext>();
+            services.AddTransient<IOrderHasItemContext, OrderHasItemContext>();
         }
     }
 }

@@ -17,6 +17,7 @@ namespace BSUIR.BL.ServicesConfiguration
             services.AddTransient<IDeliveryAddressService, DeliveryAddressService>();
             services.AddTransient<IDiscountsService, DiscountsService>();
             services.AddTransient<IPhotoService, PhotoService>();
+            services.AddTransient<IOrderHasItemService, OrderHasItemService>();
 
         }
     }

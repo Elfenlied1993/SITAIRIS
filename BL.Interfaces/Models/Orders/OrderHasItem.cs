@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
-namespace BSUIR.DAL.Interfaces.Models
+namespace BSUIR.BL.Interfaces.Models.Orders
 {
-    public partial class OrderHasItem
+    public class OrderHasItem
     {
         public int Id { get; set; }
         public int OrderId { get; set; }
         public int ItemId { get; set; }
 
-        public virtual Item Item { get; set; }
-        public virtual Order Order { get; set; }
     }
 }

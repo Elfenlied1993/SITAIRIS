@@ -48,18 +48,18 @@ namespace BSUIR.Web.Areas.Identity.Pages.Account
         {
             [Required]
             [EmailAddress]
-            [Display(Name = "Email")]
+            [Display(Name = "E-Mail")]
             public string Email { get; set; }
 
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "{0} должен содержать минимум {2} и максимум {1} символов.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(Name = "Пароль")]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Display(Name = "Подтверждение пароля")]
+            [Compare("Password", ErrorMessage = "Пароли не совпадают.")]
             public string ConfirmPassword { get; set; }
         }
 
@@ -88,10 +88,12 @@ namespace BSUIR.Web.Areas.Identity.Pages.Account
                     }
                     else
                     {
+                        await _userManager.AddToRoleAsync(user, "User");
                         await _customerService.CreateCustomerAsync<Customer>(new Customer
                         {
                             Id = user.Id,
-                            MobileNumber = user.PhoneNumber
+                            MobileNumber = user.PhoneNumber,
+                            Discount = 0
                         });
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         return LocalRedirect(returnUrl);

@@ -56,7 +56,7 @@ namespace BSUIR.Web.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Confirm new password")]
             [Compare("NewPassword", ErrorMessage = "Новый пароль и подтверждение пароля не совпадают.")]
             public string ConfirmPassword { get; set; }
-
+            public int Discount { get; set; }
             public string FirstName { get; set; }
             public string SecondName { get; set; }
             public string LastName { get; set; }
@@ -75,6 +75,7 @@ namespace BSUIR.Web.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
+                Discount = customer.Discount.Value,
                 Sex = customer.Sex,
                 LastName = customer.Lastname,
                 Date = customer.Birthdate,

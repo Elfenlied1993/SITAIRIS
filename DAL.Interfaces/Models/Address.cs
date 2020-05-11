@@ -5,6 +5,11 @@ namespace BSUIR.DAL.Interfaces.Models
 {
     public partial class Address
     {
+        public Address()
+        {
+            Order = new HashSet<Order>();
+        }
+
         public int Id { get; set; }
         public string Country { get; set; }
         public string City { get; set; }
@@ -16,5 +21,6 @@ namespace BSUIR.DAL.Interfaces.Models
         public string CustomerId { get; set; }
 
         public virtual Customer Customer { get; set; }
+        public virtual ICollection<Order> Order { get; set; }
     }
 }

@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using BSUIR.BL.Interfaces.Models.Orders;
 using BSUIR.BL.Interfaces.Services;
 using BSUIR.Common;
 using BSUIR.DAL.Interfaces.Context;
 using BSUIR.DAL.Interfaces.Extensions.Quaryable;
+using Item = BSUIR.BL.Interfaces.Models.Items.Item;
+using Order = BSUIR.BL.Interfaces.Models.Orders.Order;
 using OrderDTO = BSUIR.DAL.Interfaces.Models.Order;
 
 namespace BSUIR.BL.Services
@@ -35,7 +36,6 @@ namespace BSUIR.BL.Services
             try
             {
                 var mappedDtoModel = _mapper.Map<Order, OrderDTO>(orderCreate);
-
                 var createdEntity = await _ordersContext.Orders.AddAsync(mappedDtoModel);
 
                 if (createdEntity is null)

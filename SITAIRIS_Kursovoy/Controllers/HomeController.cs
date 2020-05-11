@@ -2,12 +2,14 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 using BSUIR.BL.Interfaces.Models;
-using BSUIR.BL.Interfaces.Models.DeliveryAddresses;
 using BSUIR.BL.Interfaces.Services;
+using BSUIR.DAL.Interfaces.Models;
 using BSUIR.Web.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using DeliveryAddress = BSUIR.BL.Interfaces.Models.DeliveryAddresses.DeliveryAddress;
 
 namespace BSUIR.Web.Controllers
 {
@@ -15,10 +17,12 @@ namespace BSUIR.Web.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IDeliveryAddressService _deliveryAddressService;
-        public HomeController(ILogger<HomeController> logger, IDeliveryAddressService deliveryAddressService)
+        private readonly RoleManager<IdentityRole> roleManager;
+        public HomeController(ILogger<HomeController> logger, IDeliveryAddressService deliveryAddressService, RoleManager<IdentityRole> roleManager)
         {
             _logger = logger;
             _deliveryAddressService = deliveryAddressService;
+            this.roleManager = roleManager;
         }
 
         public async Task<IActionResult> Index()

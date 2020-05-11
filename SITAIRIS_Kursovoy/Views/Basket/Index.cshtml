@@ -10,8 +10,8 @@
         <div class="cart-products__row _head">
             <div class="cart-products__cell _thumb"></div>
             <div class="cart-products__cell _title">Товар</div>
-            <div class="cart-products__cell _price">Стоимость</div>
-            <div class="cart-products__cell _price-summary">Итого</div>
+            <div class="cart-products__cell _price">Итого</div>
+            <div class="cart-products__cell _price-summary"></div>
         </div>
         @foreach (var item in _basket.Items)
         {
@@ -28,15 +28,15 @@
                         </a>
                     </div>
                     <div class="cart-products__cell _price">
-                        <div class="cart-products__cell _price-summary">
-                            <form form="post" asp-action="RemoveItem" asp-controller="Basket" asp-route-id="@item.Id">
-                                <button class="btn btn-danger">Удалить из корзины</button>
-                            </form>
-                            <div class="cart-products__price">
-                                <span>@item.Price</span>
-                            </div>
+                        <div class="cart-products__price">
+                            <span>@item.Price BYN</span>
                         </div>
-                    </div> <!---->
+                    </div>
+                    <div class="cart-products__cell _price-summary">
+                        <form form="post" asp-action="RemoveItem" asp-controller="Basket" asp-route-id="@item.Id">
+                            <input class="btn btn-danger" value="Удалить из корзины"/>
+                            </form>
+                    </div><!---->
                 </div>
 
             </div>

@@ -311,7 +311,7 @@ namespace BSUIR.DAL
                     .HasColumnType("date");
 
                 entity.Property(e => e.DeliveryAddressId).HasColumnName("delivery_address_id");
-
+                entity.Property(e => e.AddressId).HasColumnName("address_id");
                 entity.Property(e => e.Status)
                     .IsRequired()
                     .HasColumnName("status")
@@ -329,13 +329,17 @@ namespace BSUIR.DAL
                     .HasForeignKey(d => d.DeliveryAddressId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_order_delivery_address_id");
+                entity.HasOne(d => d.Address)
+                    .WithMany(p => p.Order)
+                    .HasForeignKey(d => d.AddressId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_order_address");
             });
 
             modelBuilder.Entity<OrderHasItem>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.ToTable("order_has_item");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.ItemId).HasColumnName("item_id");
 

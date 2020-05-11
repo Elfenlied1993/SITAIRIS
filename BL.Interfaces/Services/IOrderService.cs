@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using BSUIR.BL.Interfaces.Models.Items;
 using BSUIR.BL.Interfaces.Models.Orders;
 
 namespace BSUIR.BL.Interfaces.Services

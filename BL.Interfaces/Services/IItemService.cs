@@ -19,7 +19,6 @@ namespace BSUIR.BL.Interfaces.Services
 
         Task<TMapTo> GetItemByIdAsync<TMapTo>(int id)
             where TMapTo : Item;
-
         Task<bool> DeleteItemAsync(int id);
     }
 }
