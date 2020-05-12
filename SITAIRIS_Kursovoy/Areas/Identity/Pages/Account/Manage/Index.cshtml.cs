@@ -123,6 +123,7 @@ namespace BSUIR.Web.Areas.Identity.Pages.Account.Manage
                 }
             }
 
+            var customer = await _customerService.GetCustomerByIdAsync<Customer>(user.Id);
             await _customerService.UpdateCustomerAsync<Customer>(new Customer()
             {
                 Id = user.Id,
@@ -131,7 +132,8 @@ namespace BSUIR.Web.Areas.Identity.Pages.Account.Manage
                 Lastname = Input.LastName,
                 MobileNumber = Input.PhoneNumber,
                 Secondname = Input.SecondName,
-                Sex = Input.Sex
+                Sex = Input.Sex,
+                Discount = customer.Discount
             });
             var changeEmail = await _userManager.SetEmailAsync(user, Input.Email);
             if (Input.OldPassword != null)

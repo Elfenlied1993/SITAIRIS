@@ -41,24 +41,24 @@
 
             </div>
         }
-        <div class="desktop-table__cell shopping-cart__container js-summary" style="padding: 0px; vertical-align: bottom;">
-            <table class="shopping-cart__summary">
-                <tbody>
-                    <tr class="_total">
-                        <td class="_align"></td>
-                        <td colspan="2">
-                            <span>Итого: </span><span class="shopping-cart__summary-total"><span>@_basket.Price</span></span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="_normal">
+            <div class="desktop-table__cell shopping-cart__container js-summary" style="padding: 0px; vertical-align: bottom;">
+                <table class="shopping-cart__summary">
+                    <tbody>
+                        <tr class="_total">
+                            <td class="_align"></td>
+                            <td colspan="2">
+                                <span>Итого: </span><span class="shopping-cart__summary-total"><span>@_basket.Price</span></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="_normal">
 
-                <button onclick="window.location.href='@Url.Action("Address", "Basket")'" class="button expanded large" style="padding-left: 0px; padding-right: 0px; margin: 0px;">
-                    Оформить заказ
-                </button>
+                    <button onclick="window.location.href='@Url.Action("Address", "Basket")'" class="button expanded large" style="padding-left: 0px; padding-right: 0px; margin: 0px;">
+                        Оформить заказ
+                    </button>
 
+                </div>
             </div>
-        </div>
     </div>
 </div>

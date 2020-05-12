@@ -194,7 +194,7 @@ namespace BSUIR.Web.Controllers
                     OrderId = createdOrder.Id
                 });
             }
-
+            _basket = new Basket();
             //var related = await _orderService.GetRelatedOrderAsync<Order>(user.Id);
             //var totalSum = 0.0;
             //foreach (var order in related)

@@ -49,10 +49,14 @@ document.getElementById('historyOrders').style.display = 'block';" class="btn bt
                             {
 
                                 <div style="padding: 20px; background-color: rgb(245, 245, 245);">
+                                    <form style="float : right;" asp-page-handler="Update" asp-route-id="@order.Order.Id" method="post">
+                                        <input type="submit" class="btn btn-danger" value="Доставлено" />
+                                    </form>
                                     <div style="float: right; margin: 10px; margin-top: 0px">
                                         <form asp-page-handler="Delete" asp-route-id="@order.Order.Id" method="post">
-                                            <input class="btn btn-danger" type="submit" value="Отменить" />
+                                            <input class="btn btn-danger" type="submit" value="Отменить"/>
                                         </form>
+
                                     </div>
                                     <h2>Заказ №@order.Order.Id</h2>
 

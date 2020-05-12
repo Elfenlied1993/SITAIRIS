@@ -13,5 +13,6 @@ namespace BSUIR.BL.Interfaces.Services
 
         Task<TMapTo> CreatePhotoAsync<TMapTo>(Photo photoCreate)
             where TMapTo : Photo;
+        Task<bool> DeletePhotoAsync(int id);
     }
 }

@@ -55,5 +55,33 @@ namespace BSUIR.BL.Services
                 throw new Exception(ex.Message);
             }
         }
+
+        public async Task<bool> DeletePhotoAsync(int id)
+        {
+            try
+            {
+                var itemToDelete = _photoContext.Photos.First(p => p.Id == id);
+
+                if (itemToDelete is null)
+                {
+                    throw new Exception($"Can not find order with id {id}");
+                }
+
+                var purged = _photoContext.Photos.Remove(itemToDelete);
+
+                var result = await _photoContext.SaveChangesAsync();
+
+                if (result == 0)
+                {
+                    throw new Exception($"Deleting order with id {id} was not performed");
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Some error occured while deleting item with id {id}", ex);
+            }
+        }
     }
 }

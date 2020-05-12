@@ -209,7 +209,7 @@ namespace BSUIR.DAL
             {
                 entity.ToTable("item");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
 
                 entity.Property(e => e.CategoryId).HasColumnName("category_id");
 
@@ -364,7 +364,7 @@ namespace BSUIR.DAL
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedOnAdd();
 
                 entity.Property(e => e.ItemId).HasColumnName("item_id");
 
@@ -375,7 +375,6 @@ namespace BSUIR.DAL
                     .IsUnicode(true);
 
                 entity.Property(e => e.Name)
-                    .IsRequired()
                     .HasColumnName("name")
                     .HasMaxLength(45)
                     .IsUnicode(true);
